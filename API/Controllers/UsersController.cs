@@ -21,9 +21,15 @@ namespace API.Controllers
         // get all users 
         // make the get methos asynchonus so multiple threads can run at the same time 
         //while wait for db to retun result
+
+        // async will help us not block a thread, it gives us multi thread
+        // it also make it scalibale
+        // if you are make a data call always make it async 
+        // we use thread tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
+            // we also need to use a async method of todolist
             var users = await _context.Users.ToListAsync();
 
             return users;
