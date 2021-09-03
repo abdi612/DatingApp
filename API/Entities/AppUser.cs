@@ -5,12 +5,7 @@ namespace API.Entities
         public int Id { get; set; }
         public string UserName { get; set; }
 
-        // private int myVar;
-
-        // public int MyProperty
-        // {
-        //     get{return myVar;}
-        //     set{myVar = value;}
-        // }
+        public byte[] PasswordHash{get; set;}
+        public byte[] PasswordSalt{get; set;}
     }
 }
