@@ -1,0 +1,63 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.Data;
+using API.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Controllers
+{
+    public class BuggyController : BaseApiControllor
+    {
+        private readonly DataContext _context;
+        public BuggyController(DataContext context)
+        {
+            _context = context;
+
+        }
+
+        //create method that respond the error 
+
+        [Authorize]
+        [HttpGet("auth")]
+        public ActionResult<string> GetSecret(){
+            return "Secret text";
+        }
+
+        /**
+        method: for when user is not found 
+
+        */
+     
+        [HttpGet("not-found")]
+        public ActionResult<AppUser> GetNotFound(){
+            var thing = _context.Users.Find(-1);
+
+            if(thing == null) return NotFound();
+
+            return Ok(thing);
+        }
+
+        // handling server error on client side
+   
+        [HttpGet("server-error")]
+        public ActionResult<string> GetServerError(){
+            var thing = _context.Users.Find(-1); //tring to find something that don't exsit
+
+            // generate exception
+
+            var thingToReturn = thing.ToString(); // if return null we generate null expection error
+
+            return thingToReturn;
+
+        }
+
+        [HttpGet("bad-request")]
+        public ActionResult<string> GetBadRequest(){
+            return BadRequest("This was not a good request");
+        }
+
+    }
+}
