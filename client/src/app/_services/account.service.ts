@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import {map} from 'rxjs/operators'
+import { environment } from 'src/environments/environment';
 import { User } from '../_models/User';
 
 // service are injectable
@@ -14,7 +15,7 @@ import { User } from '../_models/User';
 // but component are destroyed as soona s they not in use.
 export class AccountService {
 
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   // create observiable var to put our user in
   // RelaySubject is like a buffer object to store
