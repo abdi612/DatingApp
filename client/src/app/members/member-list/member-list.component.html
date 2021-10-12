@@ -1,5 +1,6 @@
 <div class="row">
-    <div *ngFor="let member of members" class="col-2">
+    <!-- since member$ is observable we used the | async to subscribe to this observable -->
+    <div *ngFor="let member of members$ | async" class="col-2">
         <!-- pass member as input property -->
             <app-member-card [member]="member"></app-member-card>
 

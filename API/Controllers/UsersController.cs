@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -48,6 +49,23 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             return await _userRepository.GetMemberAsync(username);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto){
+           // this gives a user from token user used to authunticate when logged in
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+// memberUpdateDto  allow to map the data with needing to break one by 
+// e.g. user.City = memberUpdateDto.City
+// the mapper will automaticly find the match field and will map it for us.
+            _mapper.Map(memberUpdateDto,user);
+
+            _userRepository.Update(user);
+
+            if(await _userRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed to update user");
+
         }
     }
 }
